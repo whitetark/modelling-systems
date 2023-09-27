@@ -1,24 +1,24 @@
 import java.util.*;
 
 public class Process extends Event {
-    public List<Integer> workerStates = new ArrayList<>();
-    private List<Double> workersTnext = new ArrayList<>();
+    public List<Integer> states = new ArrayList<>();
+    private List<Double> tnext = new ArrayList<>();
     public Process(double delay, String name, Double maxQueue, int countOfWorkers) {
         super(delay, name, maxQueue);
         tstate = Double.MAX_VALUE;
         for (int i = 0; i < countOfWorkers; i++) {
-            workerStates.add(0);
-            workersTnext.add(Double.MAX_VALUE);
+            states.add(0);
+            tnext.add(Double.MAX_VALUE);
         }
     }
 
     @Override
     public void inAct(double tcurr) {
-        int workerIndex = workerStates.indexOf(0);
-        if (workerIndex != -1) {
-            workerStates.set(workerIndex, 1);
-            workersTnext.set(workerIndex, tcurr + getDelay());
-            tstate = Collections.min(workersTnext);
+        int index = states.indexOf(0);
+        if (index != -1) {
+            states.set(index, 1);
+            tnext.set(index, tcurr + getDelay());
+            tstate = Collections.min(tnext);
         } else {
             if (queue < maxQueue) {
                 queue += 1;
@@ -46,15 +46,15 @@ public class Process extends Event {
     @Override
     public void outAct(double tcurr, List <Event> events) {
         super.outAct(tcurr, events);
-        int workerIndex = workersTnext.indexOf(tcurr);
-        workerStates.set(workerIndex, 0);
-        workersTnext.set(workerIndex, Double.MAX_VALUE);
-        tstate = Collections.min(workersTnext);
+        int index = tnext.indexOf(tcurr);
+        states.set(index, 0);
+        tnext.set(index, Double.MAX_VALUE);
+        tstate = Collections.min(tnext);
         if (queue > 0) {
             queue -= 1;
-            workerStates.set(workerIndex, 1);
-            workersTnext.set(workerIndex, tcurr + getDelay());
-            tstate = Collections.min(workersTnext);
+            states.set(index, 1);
+            tnext.set(index, tcurr + getDelay());
+            tstate = Collections.min(tnext);
         }
         setNextEvent(events);
         if (next != null) {
@@ -65,17 +65,18 @@ public class Process extends Event {
     @Override
     public void doStatistics(double delta) {
         meanQueue += queue * delta;
-        for(int state : workerStates){
+        for(int state : states){
             meanLoad += state * delta;
         }
     }
+
     @Override
     public void printResult(double tcurr) {
         super.printResult(tcurr);
         System.out.println("Failure = " + this.failure);
         System.out.println("Average Length of Queue = " + meanQueue / tcurr);
         System.out.println("Failure Probability = " + failure / ((double) served + failure));
-        System.out.println("Average Load = " + (meanLoad/workerStates.size())/tcurr);
+        System.out.println("Average Load = " + (meanLoad/states.size())/tcurr);
     }
 
 }

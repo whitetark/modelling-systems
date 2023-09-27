@@ -17,8 +17,8 @@ public class Model {
 
     public void simulate(double timeModeling){
         while(tcurr<timeModeling) {
-            tnext = Double.MAX_VALUE;       // Час наступної події
-            Event nextEvent = null;         // Подія, яка станеться найближчою
+            tnext = Double.MAX_VALUE;
+            Event nextEvent = null;
 
             for (Event event : events) {
                 if (event.tstate < tnext) {
@@ -26,12 +26,12 @@ public class Model {
                     nextEvent = event;
                 }
             }
-            //System.out.println("\nIt's time for event in " + nextEvent.name + ", time = " + tnext);
+            //System.out.println("\nEvent " + nextEvent.name + ", time = " + tnext);
             for (Event e : events) {
                 e.doStatistics(tnext - tcurr);
                 //e.printStatistic();
             }
-            tcurr = tnext;      // перехід в момент tnext
+            tcurr = tnext;
 
             for (Event event : events) {
                 if(event.tstate == tcurr) {
@@ -40,22 +40,17 @@ public class Model {
             }
             //printInfo();
         }
-        //printResult(tcurr);
+        printResult(tcurr);
     }
     public void printInfo() {
         for (Event e : events) {
-            if(e.state == 1)
-                e.printInfo();
+            e.printInfo();
         }
     }
     public void printResult(double tcurr) {
-        System.out.println("\n-------------RESULTS-------------");
+        System.out.println("\n------RESULTS------");
         for (Event e : events) {
             e.printResult(tcurr);
-//            if (e instanceof Process) {
-//                Process p = (Process) e;
-//                System.out.println("Average Length of Queue = " + p.meanQueue / tcurr + "\nFailure Probability = " + p.failure / ((double) p.served + p.failure) +"\nAverage Load = " + p.meanLoad/tcurr);
-//            }
             System.out.println();
         }
     }

@@ -27,7 +27,7 @@ public class Event {
         served++;
     }
     protected void printInfo() {
-        System.out.println("Event = " + name + " tnext = " + tstate + " queue: " + queue + " state = " + state);
+        System.out.println("Event = " + name + " tnext = " + tstate + " queue: " + queue);
     }
     protected void printStatistic(){
         System.out.println("Event = " + name + " served = " + served + " failure = "+failure);

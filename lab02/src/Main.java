@@ -5,9 +5,9 @@ public class Main {
     public static void main(String[] args) {
         //task1();
         //task3();
-        task4();
+        //task4();
         //task5();
-        //task6();
+        task6();
     }
 
     public static void task1 (){
@@ -51,7 +51,7 @@ public class Main {
                 "P1_Ok", "P1_Err", "P1_Avg_Q", "P1_FProb", "P1_Avg_L",
                 "P2_Ok", "P2_Err", "P2_Avg_Q", "P2_FProb", "P2_Avg_L",
                 "P3_Ok", "P3_Err",  "P3_Avg_Q", "P3_FProb", "P3_Avg_L"};
-        
+
         Object[][] data = new Object[n][columnNames.length];
 
         for (int i = 0; i < n; i++) {
@@ -71,11 +71,11 @@ public class Main {
             data[i] = new Object[]{delay_create[i], delay_process1[i], delay_process2[i], delay_process3[i],
                     maxQ_list1[i], maxQ_list2[i], maxQ_list3[i],
                     process1.served, process1.failure, process1.meanQueue/1000, process1.failure / ((double) process1.served + process1.failure),
-                    (process1.meanLoad/process1.workerStates.size())/1000,
+                    (process1.meanLoad/process1.states.size())/1000,
                     process2.served, process2.failure, process1.meanQueue/1000, process1.failure / ((double) process1.served + process1.failure),
-                    (process1.meanLoad/process1.workerStates.size())/1000,
+                    (process1.meanLoad/process1.states.size())/1000,
                     process3.served, process3.failure, process1.meanQueue/1000, process1.failure / ((double) process1.served + process1.failure),
-                    (process1.meanLoad/process1.workerStates.size())/1000};
+                    (process1.meanLoad/process1.states.size())/1000};
         }
 
         JTable table = new JTable(data, columnNames);
