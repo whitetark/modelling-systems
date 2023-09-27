@@ -2,7 +2,9 @@ import java.util.List;
 
 public class Event {
     protected double meanQueue, tstate, delay, meanLoad, maxQueue;
-    protected int state, queue, failure, served;
+    protected int queue;
+    protected int failure;
+    protected int served;
     protected Event next;
     protected String name;
 
