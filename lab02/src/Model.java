@@ -2,13 +2,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Model {
-    private double tnext;
-    private double tcurr;
+    private double nextEventTime;
+    private double currentTime;
     private List <Event> events = new ArrayList<>();
 
     public Model(Event create, List<Event> process) {
-        tnext=0.0;
-        tcurr = tnext;
+        nextEventTime = 0.0;
+        currentTime = nextEventTime;
         events.add(create);
         for (Event event : process) {
             events.add(event);
@@ -16,41 +16,41 @@ public class Model {
     }
 
     public void simulate(double timeModeling){
-        while(tcurr<timeModeling) {
-            tnext = Double.MAX_VALUE;
+        while(currentTime < timeModeling) {
+            nextEventTime = Double.MAX_VALUE;
             Event nextEvent = null;
 
             for (Event event : events) {
-                if (event.tstate < tnext) {
-                    tnext = event.tstate;
+                if (event.eventTime < nextEventTime) {
+                    nextEventTime = event.eventTime;
                     nextEvent = event;
                 }
             }
-            //System.out.println("\nEvent " + nextEvent.name + ", time = " + tnext);
+            //System.out.println("\nEvent " + nextEvent.name + ", time = " + nextEventTime);
             for (Event e : events) {
-                e.doStatistics(tnext - tcurr);
+                e.doStatistics(nextEventTime - currentTime);
                 //e.printStatistic();
             }
-            tcurr = tnext;
+            currentTime = nextEventTime;
 
             for (Event event : events) {
-                if(event.tstate == tcurr) {
-                    event.outAct(tcurr, events);
+                if(event.eventTime == currentTime) {
+                    event.outAct(currentTime, events);
                 }
             }
             //printInfo();
         }
-        printResult(tcurr);
+        printResult(currentTime);
     }
     public void printInfo() {
         for (Event e : events) {
             e.printInfo();
         }
     }
-    public void printResult(double tcurr) {
+    public void printResult(double currentTime) {
         System.out.println("\n------RESULTS------");
         for (Event e : events) {
-            e.printResult(tcurr);
+            e.printResult(currentTime);
             System.out.println();
         }
     }

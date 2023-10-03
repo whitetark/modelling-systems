@@ -5,10 +5,10 @@ public class Create extends Event{
         super(delay, name);
     }
     @Override
-    public void outAct(double tcurr, List<Event> events) {
-        super.outAct(tcurr, events);
-        tstate = tcurr + getDelay();
-        next.inAct(tcurr);
+    public void outAct(double currentTime, List<Event> events) {
+        super.outAct(currentTime, events);
+        eventTime = currentTime + getDelay();
+        next.inAct(currentTime);
     }
     @Override
     public void doStatistics(double delta) {
