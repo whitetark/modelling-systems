@@ -72,9 +72,9 @@ public class Main {
                     maxQ_list1[i], maxQ_list2[i], maxQ_list3[i],
                     process1.served, process1.failure, process1.meanQueue/1000, process1.failure / ((double) process1.served + process1.failure),
                     (process1.meanLoad/process1.workerStates.size())/1000,
-                    process2.served, process2.failure, process1.meanQueue/1000, process1.failure / ((double) process1.served + process1.failure),
+                    process2.served, process2.failure, process2.meanQueue/1000, process2.failure / ((double) process2.served + process2.failure),
                     (process1.meanLoad/process1.workerStates.size())/1000,
-                    process3.served, process3.failure, process1.meanQueue/1000, process1.failure / ((double) process1.served + process1.failure),
+                    process3.served, process3.failure, process3.meanQueue/1000, process3.failure / ((double) process3.served + process3.failure),
                     (process1.meanLoad/process1.workerStates.size())/1000};
         }
 
