@@ -19,10 +19,6 @@ public class Model {
         processes = process;
     }
 
-    /**
-     * Метод моделювання
-     * @param timeModeling - час моделювання в умовних одиницях часу
-     */
     public void simulate(double timeModeling){
         while(currentTime<timeModeling) {
             nextEventTime = Double.MAX_VALUE;       // Час наступної події
@@ -34,7 +30,7 @@ public class Model {
                     nextEvent = event;
                 }
             }
-            //System.out.println("\nIt's time for element in " +nextElement.name +", time = " + tnext);
+            //System.out.println("\nIt's time for event in " +nextEvent.name +", time = " + nextEventTime);
             for (Event e : events) {
                 e.doStatistics(nextEventTime - currentTime);
             }
@@ -64,23 +60,25 @@ public class Model {
             if (e instanceof MultiTaskProcessor) {
                 totalClients += e.served;
                 MultiTaskProcessor p = (MultiTaskProcessor) e;
-                System.out.println("mean length of queue = " + p.meanQueue / currentTime + "\nfailure probability = " +
-                        p.failure / ((double) p.served + p.failure) + "\nawg load time = " + p.getTotalWorkTime() / p.getProcessCount() / timeModeling);
-                System.out.println("Average Exit Interval = " + p.totalExitTime / (p.totalCustomersExited - 1));
-                System.out.println("Average Time in system = " + (p.totalEnterTimeEnd - p.totalEnterTimeStart) / p.served);
-                for (Process process : p.getProcesses()) {
-                    System.out.println("load time in " + process.name + " = " + process.totalWorkTime / timeModeling);
+                System.out.println("Average Length of Queue = " + p.meanQueue / currentTime);
+                System.out.println("Failure Probability = " + p.failure / ((double) p.served + p.failure));
+                System.out.println("Average Load Time = " + p.getTotalWorkTime() / p.processes.size() / timeModeling);
+                System.out.println("Average Client Exit Interval = " + p.totalExitTime / (p.totalCustomersExited - 1));
+                System.out.println("Average Time in Bank = " + (p.totalEnterTimeEnd - p.totalEnterTimeStart) / p.served);
+                if(processes.size() > 2){
+                    for (Process process : p.processes) {
+                        System.out.println("Load time in " + process.name + " = " + process.totalWorkTime / timeModeling);
+                    }
                 }
             }
             System.out.println();
         }
-        System.out.println("mean clients = " + (double) totalClients / (double) timeModeling);
-        System.out.println("change queue = " + changeQueue);
+        System.out.println("Average Num Of Clients = " + (double) totalClients / timeModeling);
+        System.out.println("Num of Changing Queue = " + changeQueue);
 
 
     }
 
-    // method only for bank task
     public void tryToSwitchQueue() {
         int minQueue = Integer.MAX_VALUE;
         int maxQueue = 0;

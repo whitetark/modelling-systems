@@ -1,8 +1,8 @@
 package bank;
 
 public class Create extends Event {
-    public Create(double delay, String name) {
-        super(delay, name);
+    public Create(double delay, String name, DistributionType distributionType) {
+        super(delay, name, distributionType);
     }
     @Override
     public void outAct(double currentTime) {

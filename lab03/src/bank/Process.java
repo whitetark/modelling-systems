@@ -1,8 +1,8 @@
 package bank;
 
 public class Process extends Event {
-    public Process(double delay, String name) {
-        super(delay, name);
+    public Process(double delay, String name, DistributionType distributionType) {
+        super(delay, name, distributionType);
         this.eventTime = Double.MAX_VALUE;
     }
 

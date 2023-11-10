@@ -7,8 +7,6 @@ import java.util.Random;
  * @author Inna V. Stetsenko
  */
 public class FunRand {
-
-
     /**
      * Generates random value according to an exponential distribution
      *
@@ -81,6 +79,4 @@ public class FunRand {
         a=x[n-2]+(r-y[n-2])*(x[n-1]-x[n-2])/(y[n-1]-y[n-2]);
         return a;
     }
-
-
 }

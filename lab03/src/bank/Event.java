@@ -4,7 +4,6 @@ public class Event {
     protected double meanQueue, eventTime, delay, totalWorkTime;
     protected int state, queue, maxQueue, failure, served;
     protected NextEvents next;
-
     protected DistributionType distributionType;
 
     protected String name;
@@ -14,6 +13,7 @@ public class Event {
         maxQueue = 0;
         this.name = name;
         eventTime = 0;
+        this.distributionType = DistributionType.EXPONENTIAL;
         next = null;
 
     }
@@ -22,20 +22,32 @@ public class Event {
         maxQueue = 0;
         this.name = name;
         eventTime = 0;
+        this.distributionType = DistributionType.EXPONENTIAL;
         next = null;
 
     }
+
+    public Event(double delay, String name, DistributionType distributionType) {
+        this.delay = delay;
+        maxQueue = 0;
+        this.name = name;
+        eventTime = 0;
+        this.distributionType = distributionType;
+        next = null;
+    }
+
     public Event(double delay, String name, int maxQueue) {
         this.delay = delay;
         this.maxQueue = maxQueue;
         this.name = name;
         eventTime = 0;
+        this.distributionType = DistributionType.EXPONENTIAL;
         next = null;
     }
 
-    public void inAct(double tcurr) {
+    public void inAct(double currentTime) {
     }
-    public void outAct(double tcurr){
+    public void outAct(double currentTime){
         served++;
     }
     protected void printInfo() {
@@ -50,7 +62,7 @@ public class Event {
 
     public void doStatistics(double delta){
     }
-    public void setNextElement(NextEvents next) {
+    public void setNextEvent(NextEvents next) {
         this.next = next;
     }
 
@@ -64,11 +76,6 @@ public class Event {
                 return FunRand.exp(delay);
         }
     }
-
-    public void setDistributionType(DistributionType distributionType) {
-        this.distributionType = distributionType;
-    }
-
     protected void setEventTime(double eventTime) {
         this.eventTime = eventTime;
     }

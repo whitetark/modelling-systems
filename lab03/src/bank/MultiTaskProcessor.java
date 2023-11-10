@@ -3,7 +3,7 @@ package bank;
 import java.util.*;
 
 public class MultiTaskProcessor extends Event {
-    private List<Process> processes;
+    public List<Process> processes;
 
     protected int totalCustomersExited = 0;
     protected double totalExitTime = 0.0;
@@ -14,22 +14,22 @@ public class MultiTaskProcessor extends Event {
     public MultiTaskProcessor(List<Process> processes, String name) {
         super(name);
         this.processes = processes;
-        setTState();
+        setEventTime();
     }
     public MultiTaskProcessor(List<Process> processes, String name, int maxQueue) {
         super(name);
         this.processes = processes;
         this.maxQueue = maxQueue;
-        setTState();
+        setEventTime();
     }
     @Override
-    public void inAct(double tcurr) {
-        super.inAct(tcurr);
+    public void inAct(double currentTime) {
+        super.inAct(currentTime);
         Process process = getFreeProcess();
         if (process != null) {
-            totalEnterTimeStart += tcurr;
-            process.outAct(tcurr);
-            setTState();
+            totalEnterTimeStart += currentTime;
+            process.outAct(currentTime);
+            setEventTime();
         } else {
             if(this.queue < this.maxQueue) {
                 this.queue += 1;
@@ -40,24 +40,24 @@ public class MultiTaskProcessor extends Event {
         }
     }
     @Override
-    public void outAct(double tcurr) {
-        super.outAct(tcurr);
-        Process process = getThisProcess(tcurr);
+    public void outAct(double currentTime) {
+        super.outAct(currentTime);
+        Process process = getThisProcess(currentTime);
         if (process != null) {
             process.setState(0);
             process.setEventTime(Double.MAX_VALUE);
-            setTState();
+            setEventTime();
             if (this.queue > 0) {
-                process.outAct(tcurr);
+                process.outAct(currentTime);
                 this.queue -= 1;
-                setTState();
+                setEventTime();
             }
 
-            double exitTime = tcurr; // Час виходу клієнта
+            double exitTime = currentTime; // Час виходу клієнта
             totalCustomersExited++;
             totalExitTime += exitTime - lastExitTime; // Різниця між поточним та попереднім часом виходу
             lastExitTime = exitTime; // Оновлення останнього часу виходу
-            totalEnterTimeEnd += tcurr;
+            totalEnterTimeEnd += currentTime;
         }
     }
 
@@ -80,14 +80,14 @@ public class MultiTaskProcessor extends Event {
         return null;
     }
 
-    private void setTState() {
+    private void setEventTime() {
         this.eventTime = Collections.min(processes.stream().map(process -> process.eventTime).toList());
     }
 
     @Override
-    public void setNextElement(NextEvents element) {
+    public void setNextEvent(NextEvents event) {
         for (Process process : processes) {
-            process.setNextElement(element);
+            process.setNextEvent(event);
         }
     }
 
@@ -99,12 +99,14 @@ public class MultiTaskProcessor extends Event {
     @Override
     public void printResult() {
         int totalServed = 0;
-        for (Process process : processes) {
-            System.out.println(process.name+ " served = "+ process.served);
-            totalServed += process.served;
+            for (Process process : processes) {
+                System.out.println(process.name+ " [served = "+ process.served + " failure = " + process.failure + "]");
+                totalServed += process.served;
+            }
+        if(processes.size() > 1){
+            System.out.println(name+ " served = "+ totalServed);
+            System.out.print(" failure = " + this.failure);
         }
-        System.out.println(name+ " served = "+ totalServed);
-        System.out.println("failure = " + this.failure);
     }
 
     public double getTotalWorkTime() {
@@ -113,14 +115,6 @@ public class MultiTaskProcessor extends Event {
             totalWorkTime += process.totalWorkTime;
         }
         return  totalWorkTime;
-    }
-
-    public int getProcessCount() {
-        return processes.size();
-    }
-
-    public List<Process> getProcesses() {
-        return processes;
     }
 
     @Override
