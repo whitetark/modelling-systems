@@ -1,5 +1,4 @@
-package bank;
-
+package hospital;
 import java.util.*;
 public class NextElements {
     private List<NextElement> nextElements;
@@ -56,11 +55,11 @@ public class NextElements {
         int lowestQueue = Integer.MAX_VALUE;
 
         for (NextElement nextElement : nextElements) {
-            if (nextElement.element.getQueue() < lowestQueue) {
-                lowestQueue = nextElement.element.getQueue();
+            if (nextElement.element.getQueue().size() < lowestQueue) {
+                lowestQueue = nextElement.element.getQueue().size();
                 lowestQueueElements.clear(); // Clear the previous list as we found a lower queue
                 lowestQueueElements.add(nextElement);
-            } else if (nextElement.element.getQueue() == lowestQueue) {
+            } else if (nextElement.element.getQueue().size() == lowestQueue) {
                 lowestQueueElements.add(nextElement);
             }
         }

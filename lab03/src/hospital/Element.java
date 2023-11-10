@@ -1,11 +1,15 @@
-package bank;
+package hospital;
+import java.util.List;
 
 public class Element {
-    protected double meanQueue, tstate, delay, totalWorkTime;
-    protected int state, queue, maxQueue, failure, served;
-    protected NextElements next;
+    protected double meanQueue, tstate, delay, delayfrom, delayto, totalWorkTime;
+    protected int state, maxQueue, failure, served, k;
 
-    protected DistributionType distributionType;
+    protected ClientType currentClientType;
+    protected NextElementsOnClientType next;
+
+    protected List<ClientType> queue;
+    protected DistributionType distributionType = DistributionType.EXPONENTIAL;
 
     protected String name;
 
@@ -35,7 +39,14 @@ public class Element {
 
     public void inAct(double tcurr) {
     }
+    public void inAct(double tcurr, ClientType clientType) {
+    }
+
     public void outAct(double tcurr){
+        served++;
+    }
+
+    public void outAct(double tcurr, ClientType clientType){
         served++;
     }
     protected void printInfo() {
@@ -50,16 +61,20 @@ public class Element {
 
     public void doStatistics(double delta){
     }
-    public void setNextElement(NextElements next) {
+    public void setNextElement(NextElementsOnClientType next) {
         this.next = next;
     }
 
     protected double getDelay() {
         switch (distributionType) {
+            case EXPONENTIAL:
+                return FunRand.exp(delay);
             case UNIFORM:
-                return FunRand.unif(delay+delay*0.1, delay-delay*0.1);
+                return FunRand.unif(delayfrom, delayto);
             case NORMAL:
                 return FunRand.norm(delay, 0.4);
+            case ERLANG:
+                return FunRand.erlang(delay, k);
             default:
                 return FunRand.exp(delay);
         }
@@ -77,7 +92,19 @@ public class Element {
         this.state = state;
     }
 
-    public int getQueue() {
+    public List<ClientType> getQueue() {
         return queue;
+    }
+
+    public void setUniformDistribution(double delayfrom, double delayto) {
+        distributionType = DistributionType.UNIFORM;
+        this.delayfrom = delayfrom;
+        this.delayto = delayto;
+    }
+
+    public void setErlangDistribution(double mean, int k) {
+        distributionType = DistributionType.ERLANG;
+        this.delay = mean;
+        this.k = k;
     }
 }

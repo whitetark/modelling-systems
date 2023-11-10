@@ -1,20 +1,20 @@
 package bank;
 
-public class Process extends Element {
+public class Process extends Event {
     public Process(double delay, String name) {
         super(delay, name);
-        this.tstate = Double.MAX_VALUE;
+        this.eventTime = Double.MAX_VALUE;
     }
 
     @Override
-    public void outAct(double tcurr) {
-        super.outAct(tcurr);
+    public void outAct(double currentTime) {
+        super.outAct(currentTime);
             this.state = 1;
             double delay = getDelay();
-            this.tstate = tcurr + delay;
+            this.eventTime = currentTime + delay;
             totalWorkTime += delay;
             if (this.next != null) {
-                this.next.getNextElement().inAct(tcurr);
+                this.next.getNextEvent().inAct(currentTime);
             }
     }
 

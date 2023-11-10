@@ -1,4 +1,4 @@
-package bank;
+package hospital;
 
 public enum NextElementsType {
     PRIORITY,

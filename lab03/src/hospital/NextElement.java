@@ -1,5 +1,4 @@
-package bank;
-
+package hospital;
 public class NextElement {
     protected Element element;
     protected double probability;
