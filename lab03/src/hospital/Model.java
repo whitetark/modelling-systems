@@ -4,17 +4,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Model {
-    private double tnext;
-    private double tcurr;
-    private List <Element> elements = new ArrayList<>();
+    private double nextEventTime;
+    private double currentTime;
+    private List <Event> events = new ArrayList<>();
     public static List<Double> timeIn = new ArrayList<>();
     public static List<Double> timeOut = new ArrayList<>();
 
     public Model(Create create, List<MultiTaskProcessor> process) {
-        tnext=0.0;
-        tcurr = tnext;
-        elements.add(create);
-        elements.addAll(process);
+        nextEventTime=0.0;
+        currentTime = nextEventTime;
+        events.add(create);
+        events.addAll(process);
     }
 
     /**
@@ -22,27 +22,27 @@ public class Model {
      * @param timeModeling - час моделювання в умовних одиницях часу
      */
     public void simulate(double timeModeling){
-        while(tcurr<timeModeling) {
-            tnext = Double.MAX_VALUE;       // Час наступної події
-            Element nextElement = null;         // Подія, яка станеться найближчою
+        while(currentTime < timeModeling) {
+            nextEventTime = Double.MAX_VALUE;       // Час наступної події
+            Event nextEvent = null;         // Подія, яка станеться найближчою
 
-            for (Element element : elements) {
-                if (element.tstate < tnext) {
-                    tnext = element.tstate;
-                    nextElement = element;
+            for (Event event : events) {
+                if (event.eventTime < nextEventTime) {
+                    nextEventTime = event.eventTime;
+                    nextEvent = event;
                 }
             }
-            System.out.println("\nIt's time for element in " +
-                    nextElement.name +
-                    ", time = " + tnext);
-            for (Element e : elements) {
-                e.doStatistics(tnext - tcurr);
+//            System.out.println("\nIt's time for element in " +
+//                    nextEvent.name +
+//                    ", time = " + nextEventTime);
+            for (Event e : events) {
+                e.doStatistics(nextEventTime - currentTime);
             }
-            tcurr = tnext;
+            currentTime = nextEventTime;
 
-            for (Element element : elements) {
-                if(element.tstate == tcurr) {
-                    element.outAct(tcurr, element.currentClientType);
+            for (Event event : events) {
+                if(event.eventTime == currentTime) {
+                    event.outAct(currentTime, event.currentClientType);
                 }
             }
             printInfo();
@@ -50,24 +50,22 @@ public class Model {
         printResult(timeModeling);
     }
     public void printInfo() {
-        for (Element e : elements) {
+        for (Event e : events) {
             if(e.state == 1)
                 e.printInfo();
         }
     }
     public void printResult( double timeModeling) {
         System.out.println("\n-------------RESULTS-------------");
-        for (Element e : elements) {
+        for (Event e : events) {
             e.printResult();
             if (e instanceof MultiTaskProcessor) {
                 MultiTaskProcessor p = (MultiTaskProcessor) e;
-                System.out.println("mean length of queue = " +
-                        p.meanQueue / tcurr
-                        + "\nfailure probability = " +
-                        p.failure / ((double) p.served + p.failure) +
-                        "\nawg load time = " + p.getTotalWorkTime() / p.getProucessCount() / timeModeling);
-                for (Process process : p.getProcesses()) {
-                    System.out.println("load time in " + process.name + " = " + process.totalWorkTime / timeModeling);
+                System.out.println("Average Length of Queue = " + p.meanQueue / currentTime);
+                System.out.println("Failure Probability = " + p.failure / ((double) p.served + p.failure));
+                System.out.println("Average Load Time = " + p.getTotalWorkTime() / p.processes.size() / timeModeling);
+                for (Process process : p.processes) {
+                    System.out.println("Load Time in " + process.name + " = " + process.totalWorkTime / timeModeling);
                 }
             }
             System.out.println();
@@ -81,12 +79,12 @@ public class Model {
             sumTimeOut += time;
         }
 
-        System.out.println("mean time in system = " + (sumTimeOut - sumTimeIn) / timeIn.size());
+        System.out.println("Average Time in System = " + (sumTimeOut - sumTimeIn) / timeIn.size());
         double intervalTimeIn = 0;
         for (int i = 0; i < timeIn.size() - 1; i++) {
             intervalTimeIn += timeIn.get(i + 1) - timeIn.get(i);
         }
         intervalTimeIn /= timeIn.size() - 1;
-        System.out.println("interval patient arrival = " + intervalTimeIn);
+        System.out.println("Interval Patient Arrival = " + intervalTimeIn);
     }
 }

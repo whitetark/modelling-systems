@@ -1,20 +1,19 @@
 package hospital;
-import java.util.List;
 
-public class Create extends Element{
+public class Create extends Event {
     public Create(double delay, String name) {
         super(delay, name);
     }
     @Override
-    public void outAct(double tcurr, ClientType clientType1) {
-        super.outAct(tcurr);
-        Model.timeIn.add(tcurr);
+    public void outAct(double currentTime, ClientType clientType1) {
+        super.outAct(currentTime);
+        Model.timeIn.add(currentTime);
         double delay = getDelay();
         totalWorkTime += delay;
-        tstate = tcurr + delay;
+        eventTime = currentTime + delay;
         ClientType clientType = getClientByProbability();
-        Element nextEl = next.getNextElement(clientType);
-        nextEl.inAct(tcurr, clientType);
+        Event nextEl = next.getNextElement(clientType);
+        nextEl.inAct(currentTime, clientType);
     }
     @Override
     public void doStatistics(double delta) {

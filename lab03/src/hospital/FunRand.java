@@ -14,8 +14,6 @@ import java.util.Random;
  * @author Inna V. Stetsenko
  */
 public  class FunRand {
-
-
     /**
      * Generates random value according to an exponential distribution
      *
@@ -101,6 +99,4 @@ public  class FunRand {
 
         return -mean * Math.log(product);
     }
-
-
 }

@@ -1,56 +1,55 @@
 package hospital;
 import java.util.List;
 
-public class Element {
-    protected double meanQueue, tstate, delay, delayfrom, delayto, totalWorkTime;
+public class Event {
+    protected double meanQueue, eventTime, delay, delayFrom, delayTo, totalWorkTime;
     protected int state, maxQueue, failure, served, k;
-
     protected ClientType currentClientType;
-    protected NextElementsOnClientType next;
+    protected NextEventsOnClientType next;
 
     protected List<ClientType> queue;
     protected DistributionType distributionType = DistributionType.EXPONENTIAL;
 
     protected String name;
 
-    public Element(String name) {
+    public Event(String name) {
         this.delay = 0;
         maxQueue = 0;
         this.name = name;
-        tstate = 0;
+        eventTime = 0;
         next = null;
 
     }
-    public Element(double delay, String name) {
+    public Event(double delay, String name) {
         this.delay = delay;
         maxQueue = 0;
         this.name = name;
-        tstate = 0;
+        eventTime = 0;
         next = null;
 
     }
-    public Element(double delay, String name, int maxQueue) {
+    public Event(double delay, String name, int maxQueue) {
         this.delay = delay;
         this.maxQueue = maxQueue;
         this.name = name;
-        tstate = 0;
+        eventTime = 0;
         next = null;
     }
 
-    public void inAct(double tcurr) {
+    public void inAct(double currentTime) {
     }
-    public void inAct(double tcurr, ClientType clientType) {
+    public void inAct(double currentTime, ClientType clientType) {
     }
 
-    public void outAct(double tcurr){
+    public void outAct(double currentTime){
         served++;
     }
 
-    public void outAct(double tcurr, ClientType clientType){
+    public void outAct(double currentTime, ClientType clientType){
         served++;
     }
     protected void printInfo() {
-        System.out.println("Event = " + name + " tnext = " + tstate + " queue: " + queue + " state = " + state);
+        System.out.println("Event = " + name + " nextEventTime = " + eventTime + " queue: " + queue + " state = " + state);
     }
     protected void printStatistic(double timeModeling){
         System.out.println("Event = " + name + " served = " + served + " failure = "+failure);
@@ -61,7 +60,7 @@ public class Element {
 
     public void doStatistics(double delta){
     }
-    public void setNextElement(NextElementsOnClientType next) {
+    public void setNextElement(NextEventsOnClientType next) {
         this.next = next;
     }
 
@@ -70,7 +69,7 @@ public class Element {
             case EXPONENTIAL:
                 return FunRand.exp(delay);
             case UNIFORM:
-                return FunRand.unif(delayfrom, delayto);
+                return FunRand.unif(delayFrom, delayTo);
             case NORMAL:
                 return FunRand.norm(delay, 0.4);
             case ERLANG:
@@ -84,8 +83,8 @@ public class Element {
         this.distributionType = distributionType;
     }
 
-    protected void setTstate(double tstate) {
-        this.tstate = tstate;
+    protected void setEventTime(double eventTime) {
+        this.eventTime = eventTime;
     }
 
     protected void setState(int state) {
@@ -96,10 +95,10 @@ public class Element {
         return queue;
     }
 
-    public void setUniformDistribution(double delayfrom, double delayto) {
+    public void setUniformDistribution(double delayFrom, double delayTo) {
         distributionType = DistributionType.UNIFORM;
-        this.delayfrom = delayfrom;
-        this.delayto = delayto;
+        this.delayFrom = delayFrom;
+        this.delayTo = delayTo;
     }
 
     public void setErlangDistribution(double mean, int k) {

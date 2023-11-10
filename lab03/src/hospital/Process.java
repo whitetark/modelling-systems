@@ -1,12 +1,10 @@
 package hospital;
 
-import org.w3c.dom.events.Event;
-
-public class Process extends Element {
+public class Process extends Event {
 
     public Process(double delay, String name) {
         super(delay, name);
-        this.tstate = Double.MAX_VALUE;
+        this.eventTime = Double.MAX_VALUE;
     }
 
     @Override
@@ -14,7 +12,7 @@ public class Process extends Element {
         super.outAct(tcurr);
             this.state = 1;
             double delay = getDelay();
-            this.tstate = tcurr + delay;
+            this.eventTime = tcurr + delay;
             totalWorkTime += delay;
             if (this.next != null) {
                 if (name.equals("Go to doctor"))
@@ -25,7 +23,7 @@ public class Process extends Element {
                     else
                         this.currentClientType = ClientType.SECOND;
                 }
-                Element thisNext = this.next.getNextElement(currentClientType);
+                Event thisNext = this.next.getNextElement(currentClientType);
                 if(thisNext != null) {
                     thisNext.inAct(tcurr, currentClientType);
                 }
@@ -48,7 +46,7 @@ public class Process extends Element {
         System.out.println("failure = " + this.failure);
     }
 
-    public void setNextElement(NextElementsOnClientType next) {
+    public void setNextElement(NextEventsOnClientType next) {
         this.next = next;
     }
 }

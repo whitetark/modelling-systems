@@ -2,8 +2,8 @@ package hospital;
 
 import java.util.*;
 
-public class MultiTaskProcessor extends Element {
-    private List<Process> processes;
+public class MultiTaskProcessor extends Event {
+    public List<Process> processes;
     protected int totalCustomersExited = 0;
     protected double totalExitTime = 0.0;
     protected double lastExitTime = 0.0; // Останній час виходу клієнта
@@ -17,13 +17,13 @@ public class MultiTaskProcessor extends Element {
     public MultiTaskProcessor(List<Process> processes, String name) {
         super(name);
         this.processes = processes;
-        setTState();
+        setEventTime();
     }
     public MultiTaskProcessor(List<Process> processes, String name, int maxQueue) {
         super(name);
         this.processes = processes;
         this.maxQueue = maxQueue;
-        setTState();
+        setEventTime();
     }
 
 
@@ -44,7 +44,7 @@ public class MultiTaskProcessor extends Element {
             totalEnterTimeStart += tcurr;
             process.currentClientType = currentClientType;
             process.outAct(tcurr);
-            setTState();
+            setEventTime();
         } else {
             if(this.queue.size() < this.maxQueue) {
                 this.queue.add(currentClientType);
@@ -56,44 +56,44 @@ public class MultiTaskProcessor extends Element {
     }
 
     @Override
-    public void outAct(double tcurr, ClientType clientType) {
+    public void outAct(double currentTime, ClientType clientType) {
         this.currentClientType = clientType;
-        outAct(tcurr);
+        outAct(currentTime);
     }
     @Override
-    public void outAct(double tcurr) {
-        super.outAct(tcurr);
-        Process process = getThisProcess(tcurr);
+    public void outAct(double currentTime) {
+        super.outAct(currentTime);
+        Process process = getThisProcess(currentTime);
         if (process != null) {
             process.setState(0);
-            process.setTstate(Double.MAX_VALUE);
-            setTState();
+            process.setEventTime(Double.MAX_VALUE);
+            setEventTime();
             if (this.queue.size() > 0) {
                 if(isDoctor) {
                     int id = this.queue.indexOf(ClientType.FIRST);
                     if (id == -1) {
                         process.currentClientType = this.queue.get(0);
-                        process.outAct(tcurr);
+                        process.outAct(currentTime);
                         this.queue.remove(0);
                     } else {
                         process.currentClientType = this.queue.get(id);
-                        process.outAct(tcurr);
+                        process.outAct(currentTime);
                         this.queue.remove(id);
                     }
                 }
                 else {
                     process.currentClientType = this.queue.get(0);
-                    process.outAct(tcurr);
+                    process.outAct(currentTime);
                     this.queue.remove(0);
                 }
-                setTState();
+                setEventTime();
             }
 
-            double exitTime = tcurr; // Час виходу клієнта
+            double exitTime = currentTime; // Час виходу клієнта
             totalCustomersExited++;
             totalExitTime += exitTime - lastExitTime; // Різниця між поточним та попереднім часом виходу
             lastExitTime = exitTime; // Оновлення останнього часу виходу
-            totalEnterTimeEnd += tcurr;
+            totalEnterTimeEnd += currentTime;
         }
     }
 
@@ -107,21 +107,21 @@ public class MultiTaskProcessor extends Element {
         return null;
     }
 
-    private Process getThisProcess(double tcurr) {
+    private Process getThisProcess(double currentTime) {
         for (Process process : processes) {
-            if (process.tstate == tcurr) {
+            if (process.eventTime == currentTime) {
                 return process;
             }
         }
         return null;
     }
 
-    private void setTState() {
-        this.tstate = Collections.min(processes.stream().map(process -> process.tstate).toList());
+    private void setEventTime() {
+        this.eventTime = Collections.min(processes.stream().map(process -> process.eventTime).toList());
     }
 
     @Override
-    public void setNextElement(NextElementsOnClientType element) {
+    public void setNextElement(NextEventsOnClientType element) {
         for (Process process : processes) {
             process.setNextElement(element);
         }
@@ -136,11 +136,12 @@ public class MultiTaskProcessor extends Element {
     public void printResult() {
         int totalServed = 0;
         for (Process process : processes) {
-            System.out.println(process.name+ " served = "+ process.served);
+            System.out.println(process.name+ " [served = "+ process.served + " failure = "+ process.failure+"]");
             totalServed += process.served;
         }
-        System.out.println(name+ " served = "+ totalServed);
-        System.out.println("failure = " + this.failure);
+        if(processes.size() > 1){
+            System.out.println(name+ " [served = "+ totalServed + " failure = " + this.failure+"]");
+        }
     }
 
     public double getTotalWorkTime() {
@@ -149,14 +150,6 @@ public class MultiTaskProcessor extends Element {
             totalWorkTime += process.totalWorkTime;
         }
         return  totalWorkTime;
-    }
-
-    public int getProucessCount() {
-        return processes.size();
-    }
-
-    public List<Process> getProcesses() {
-        return processes;
     }
 
     @Override

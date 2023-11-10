@@ -5,27 +5,29 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        //they are comming to hospital
+        //They are coming to hospital
         Create patient = new Create(15, "Patient");
 
-        //delay zero because sets later
+        //Delay zero because sets later
         Process firstDoctor = new Process(0, "First Doctor");
         Process secondDoctor = new Process(0, "Second Doctor");
 
-        // now they are comming to doctor
-        MultiTaskProcessor multiDoctorProcessor = new MultiTaskProcessor(List.of(firstDoctor, secondDoctor), "multiDoctorProcessor", Integer.MAX_VALUE);
-        multiDoctorProcessor.isDoctor = true;
+        //Now they are coming to doctor
+        MultiTaskProcessor dutyDoctorsArc = new MultiTaskProcessor(List.of(firstDoctor, secondDoctor), "Duty Doctors Processor", Integer.MAX_VALUE);
+        dutyDoctorsArc.isDoctor = true;
 
-        NextElements firstDoctorNextElements = new NextElements(List.of(new NextElement(multiDoctorProcessor, 1)), NextElementsType.PRIORITY);
+        NextEvents doctorNextEvents = new NextEvents(List.of(new NextEvent(dutyDoctorsArc, 1)), NextEventsType.PRIORITY);
 
-        Map map = new HashMap<ClientType, NextElements>();
-        map.put(ClientType.FIRST, firstDoctorNextElements);
-        map.put(ClientType.SECOND, firstDoctorNextElements);
-        map.put(ClientType.THIRD, firstDoctorNextElements);
+        Map clientsCameToHospital = new HashMap<ClientType, NextEvents>();
+        clientsCameToHospital.put(ClientType.FIRST, doctorNextEvents);
+        clientsCameToHospital.put(ClientType.SECOND, doctorNextEvents);
+        clientsCameToHospital.put(ClientType.THIRD, doctorNextEvents);
 
-        NextElementsOnClientType afterComming = new NextElementsOnClientType(map);
+        NextEventsOnClientType afterComing = new NextEventsOnClientType(clientsCameToHospital);
 
-        patient.setNextElement(afterComming);
+        patient.setNextElement(afterComing);
+
+        //Attendants are taken to the rooms
 
         Process firstAccompanying = new Process(0, "First Accompanying");
         Process secondAccompanying = new Process(0, "Second Accompanying");
@@ -34,86 +36,92 @@ public class Main {
         secondAccompanying.setUniformDistribution(3, 8);
         thirdAccompanying.setUniformDistribution(3, 8);
 
-        MultiTaskProcessor multiAccompanyingProcessor = new MultiTaskProcessor(List.of(firstAccompanying, secondAccompanying, thirdAccompanying), "multiAccompanyingProcessor", Integer.MAX_VALUE);
+        MultiTaskProcessor attendantsArc = new MultiTaskProcessor(List.of(firstAccompanying, secondAccompanying, thirdAccompanying), "Accompanying Processor", Integer.MAX_VALUE);
 
-        NextElements firstAccompanyingNextElements = new NextElements(List.of(new NextElement(multiAccompanyingProcessor, 1)), NextElementsType.PRIORITY);
+        NextEvents attendantsNextEvents = new NextEvents(List.of(new NextEvent(attendantsArc, 1)), NextEventsType.PRIORITY);
 
         Process goToLab = new Process(0, "Go to laboratory");
         goToLab.setUniformDistribution(2, 5);
-        MultiTaskProcessor multiGoToLabProcessor = new MultiTaskProcessor(List.of(goToLab), "multiGoToLabProcessor", Integer.MAX_VALUE);
+        MultiTaskProcessor goToLabArc = new MultiTaskProcessor(List.of(goToLab), "Go To Lab Processor", Integer.MAX_VALUE);
 
-        NextElements firstGoToLabNextElements = new NextElements(List.of(new NextElement(multiGoToLabProcessor, 1)), NextElementsType.PRIORITY);
+        NextEvents goToLabNextEvents = new NextEvents(List.of(new NextEvent(goToLabArc, 1)), NextEventsType.PRIORITY);
 
-        Map map2 = new HashMap<ClientType, NextElements>();
-        map2.put(ClientType.FIRST, firstAccompanyingNextElements);
-        map2.put(ClientType.SECOND, firstGoToLabNextElements);
-        map2.put(ClientType.THIRD, firstGoToLabNextElements);
+        Map clientsAfterDoctor = new HashMap<ClientType, NextEvents>();
+        clientsAfterDoctor.put(ClientType.FIRST, attendantsNextEvents);
+        clientsAfterDoctor.put(ClientType.SECOND, goToLabNextEvents);
+        clientsAfterDoctor.put(ClientType.THIRD, goToLabNextEvents);
 
-        NextElementsOnClientType afterDoctor = new NextElementsOnClientType(map2);
+        NextEventsOnClientType afterDoctor = new NextEventsOnClientType(clientsAfterDoctor);
 
         firstDoctor.setNextElement(afterDoctor);
         secondDoctor.setNextElement(afterDoctor);
 
-        Process registrationToLab = new Process(0, "registrationToLaboratory");
+        //2nd and 3rd types are coming to registration
+
+        Process registrationToLab = new Process(0, "Registration to Laboratory");
         registrationToLab.setErlangDistribution(4.5, 3);
-        MultiTaskProcessor multiregistrationToLabProcessor = new MultiTaskProcessor(List.of(registrationToLab), "multiregistrationToLabProcessor", Integer.MAX_VALUE);
+        MultiTaskProcessor registrationArc = new MultiTaskProcessor(List.of(registrationToLab), "Registration To Lab Processor", Integer.MAX_VALUE);
 
-        NextElements firstRegistrationToLabNextElements = new NextElements(List.of(new NextElement(multiregistrationToLabProcessor, 1)), NextElementsType.PRIORITY);
+        NextEvents registrationNextEvents = new NextEvents(List.of(new NextEvent(registrationArc, 1)), NextEventsType.PRIORITY);
 
-        Map map2_2 = new HashMap<ClientType, NextElements>();
-        map2_2.put(ClientType.FIRST, null);
-        map2_2.put(ClientType.SECOND, firstRegistrationToLabNextElements);
-        map2_2.put(ClientType.THIRD, firstRegistrationToLabNextElements);
+        Map clientsCameToRegistration = new HashMap<ClientType, NextEvents>();
+        clientsCameToRegistration.put(ClientType.FIRST, null);
+        clientsCameToRegistration.put(ClientType.SECOND, registrationNextEvents);
+        clientsCameToRegistration.put(ClientType.THIRD, registrationNextEvents);
 
-
-        NextElementsOnClientType afterComeToLab = new NextElementsOnClientType(map2_2);
+        NextEventsOnClientType afterComeToLab = new NextEventsOnClientType(clientsCameToRegistration);
 
         goToLab.setNextElement(afterComeToLab);
+
+        //2nd and 3rd types are coming to lab
 
         Process firstLaborant = new Process(0, "First Laborant");
         Process secondLaborant = new Process(0, "Second Laborant");
         firstLaborant.setErlangDistribution(4, 2);
         secondLaborant.setErlangDistribution(4, 2);
 
-        MultiTaskProcessor multiLaborantProcessor = new MultiTaskProcessor(List.of(firstLaborant, secondLaborant), "multiLaborantProcessor", Integer.MAX_VALUE);
+        MultiTaskProcessor laboratoryArc = new MultiTaskProcessor(List.of(firstLaborant, secondLaborant), "Laboratory Processor", Integer.MAX_VALUE);
 
-        NextElements firstLaborantNextElements = new NextElements(List.of(new NextElement(multiLaborantProcessor, 1)), NextElementsType.PRIORITY);
+        NextEvents laboratoryNextEvents = new NextEvents(List.of(new NextEvent(laboratoryArc, 1)), NextEventsType.PRIORITY);
 
-        Map map3 = new HashMap<ClientType, NextElements>();
-        map3.put(ClientType.FIRST, null);
-        map3.put(ClientType.SECOND, firstLaborantNextElements);
-        map3.put(ClientType.THIRD, firstLaborantNextElements);
+        Map clientsCameToLab = new HashMap<ClientType, NextEvents>();
+        clientsCameToLab.put(ClientType.FIRST, null);
+        clientsCameToLab.put(ClientType.SECOND, laboratoryNextEvents);
+        clientsCameToLab.put(ClientType.THIRD, laboratoryNextEvents);
 
-        NextElementsOnClientType afterLab = new NextElementsOnClientType(map3);
+        NextEventsOnClientType afterLab = new NextEventsOnClientType(clientsCameToLab);
 
         registrationToLab.setNextElement(afterLab);
+
+        //2nd and 3rd types are going to doctor
 
         Process goToDoctor = new Process(0, "Go to doctor");
         goToDoctor.setUniformDistribution(2, 5);
 
-        MultiTaskProcessor multiGoToDoctorProcessor = new MultiTaskProcessor(List.of(goToDoctor), "multiGoToDoctorProcessor", Integer.MAX_VALUE);
+        MultiTaskProcessor goToDoctorArc = new MultiTaskProcessor(List.of(goToDoctor), "Go To Doctor Processor", Integer.MAX_VALUE);
 
-        NextElements firstGoToDoctorNextElements = new NextElements(List.of(new NextElement(multiGoToDoctorProcessor, 1)), NextElementsType.PRIORITY);
+        NextEvents goToDoctorNextEvents = new NextEvents(List.of(new NextEvent(goToDoctorArc, 1)), NextEventsType.PRIORITY);
 
-        Map map3_2 = new HashMap<ClientType, NextElements>();
-        map3_2.put(ClientType.FIRST, null);
-        map3_2.put(ClientType.SECOND, firstGoToDoctorNextElements);
-        map3_2.put(ClientType.THIRD, firstGoToDoctorNextElements);
+        Map clientsGoToDoctor = new HashMap<ClientType, NextEvents>();
+        clientsGoToDoctor.put(ClientType.FIRST, null);
+        clientsGoToDoctor.put(ClientType.SECOND, goToDoctorNextEvents);
+        clientsGoToDoctor.put(ClientType.THIRD, goToDoctorNextEvents);
 
-        NextElementsOnClientType afterLab2 = new NextElementsOnClientType(map3_2);
+        NextEventsOnClientType afterLab2 = new NextEventsOnClientType(clientsGoToDoctor);
         firstLaborant.setNextElement(afterLab2);
         secondLaborant.setNextElement(afterLab2);
 
-        Map map4 = new HashMap<ClientType, NextElements>();
-        map4.put(ClientType.FIRST, firstDoctorNextElements);
+        //Doctor accepts other clients
+
+        Map map4 = new HashMap<ClientType, NextEvents>();
+        map4.put(ClientType.FIRST, doctorNextEvents);
         map4.put(ClientType.SECOND, null);
         map4.put(ClientType.THIRD, null);
 
-        NextElementsOnClientType afterCome = new NextElementsOnClientType(map4);
+        NextEventsOnClientType afterCome = new NextEventsOnClientType(map4);
         goToDoctor.setNextElement(afterCome);
 
-
-        Model model = new Model(patient, List.of(multiDoctorProcessor, multiAccompanyingProcessor, multiGoToDoctorProcessor, multiLaborantProcessor, multiGoToLabProcessor, multiregistrationToLabProcessor));
+        Model model = new Model(patient, List.of(dutyDoctorsArc, attendantsArc, goToDoctorArc, laboratoryArc, goToLabArc, registrationArc));
         model.simulate(10000);
     }
 }
