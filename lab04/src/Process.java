@@ -6,14 +6,14 @@ public class Process extends Event {
     }
 
     @Override
-    public void outAct(double tcurr) {
-        super.outAct(tcurr);
+    public void outAct(double currentTime) {
+        super.outAct(currentTime);
             this.state = 1;
             double delay = getDelay();
-            this.eventTime = tcurr + delay;
+            this.eventTime = currentTime + delay;
             totalWorkTime += delay;
             if (this.next != null) {
-                this.next.getNextEvent().inAct(tcurr);
+                this.next.getNextEvent().inAct(currentTime);
             }
     }
 

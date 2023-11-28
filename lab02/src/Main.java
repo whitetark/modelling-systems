@@ -23,9 +23,9 @@ public class Main {
 
     public static void task3 (){
         Create create = new Create(5, "Create");
-        Process process1 = new Process(5, "Process1", 5.0, 2);
-        Process process2 = new Process(5, "Process2", 5.0, 2);
-        Process process3 = new Process(5, "Process3", 5.0, 2);
+        Process process1 = new Process(5, "Process1", 5.0, 1);
+        Process process2 = new Process(5, "Process2", 5.0, 1);
+        Process process3 = new Process(5, "Process3", 5.0, 1);
 
         create.setNextElement(process1);
         process1.setNextElement(process2);
@@ -100,9 +100,9 @@ public class Main {
 
     public static void task6(){
         Create create = new Create(5, "Create");
-        Process process1 = new Process(5, "Process1", 5.0, 2);
-        Process process2 = new Process(5, "Process2", 5.0, 2);
-        Process process3 = new Process(5, "Process3", 5.0, 2);
+        Process process1 = new Process(5, "Process1", 5.0, 3);
+        Process process2 = new Process(5, "Process2", 5.0, 3);
+        Process process3 = new Process(5, "Process3", 5.0, 3);
 
         List<Event> nextEvents = List.of(process2, process3);
 

@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a846f77a-a745-4072-8462-c67262d489a5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab02/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab02/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Create.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Create.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Element.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Event.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MultiTaskProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MultiTaskProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NextElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NextEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NextElements.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NextEvents.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NextElementsType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NextEventsType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Process.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Process.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

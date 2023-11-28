@@ -42,8 +42,8 @@ public class Main {
 
             MultiTaskProcessor multiTaskProcessor = new MultiTaskProcessor(List.of(process), "MultiTaskProcessor" + i, Integer.MAX_VALUE);
 
-            NextEvent hostesNext = new NextEvent(multiTaskProcessor, 1);
-            nextEventList.add(hostesNext);
+            NextEvent hostsNext = new NextEvent(multiTaskProcessor, 1);
+            nextEventList.add(hostsNext);
 
             multiTaskProcessors1.add(multiTaskProcessor);
         }
@@ -53,8 +53,8 @@ public class Main {
 
             MultiTaskProcessor multiTaskProcessor = new MultiTaskProcessor(List.of(process), "MultiTaskProcessor" + i, Integer.MAX_VALUE);
 
-            NextEvent hostesNext = new NextEvent(multiTaskProcessor, 1);
-            nextEventList.add(hostesNext);
+            NextEvent hostsNext = new NextEvent(multiTaskProcessor, 1);
+            nextEventList.add(hostsNext);
 
             multiTaskProcessors2.add(multiTaskProcessor);
         }
@@ -80,8 +80,8 @@ public class Main {
 
             MultiTaskProcessor multiTaskProcessor = new MultiTaskProcessor(List.of(process), "MultiTaskProcessor" + i, Integer.MAX_VALUE);
 
-            NextEvent hostesNext = new NextEvent(multiTaskProcessor, 1);
-            nextEventList.add(hostesNext);
+            NextEvent hostsNext = new NextEvent(multiTaskProcessor, 1);
+            nextEventList.add(hostsNext);
 
             multiTaskProcessors.add(multiTaskProcessor);
         }
@@ -102,7 +102,6 @@ public class Main {
         System.out.println("Results:");
         System.out.println("N\tAverage Time (ms)");
 
-        System.out.println("N" + "; " + "time" + ";");
         for (Map.Entry<Integer, Double> entry : sortedResults.entrySet()) {
             System.out.println(entry.getKey() + "; " + entry.getValue() + ";");
         }

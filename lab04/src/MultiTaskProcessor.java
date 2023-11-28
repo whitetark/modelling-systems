@@ -2,7 +2,6 @@ import java.util.*;
 
 public class MultiTaskProcessor extends Event {
     private List<Process> processes;
-
     protected int totalCustomersExited = 0;
     protected double totalExitTime = 0.0;
     protected double lastExitTime = 0.0; // Останній час виходу клієнта
@@ -12,13 +11,13 @@ public class MultiTaskProcessor extends Event {
     public MultiTaskProcessor(List<Process> processes, String name) {
         super(name);
         this.processes = processes;
-        setTState();
+        setEventTime();
     }
     public MultiTaskProcessor(List<Process> processes, String name, int maxQueue) {
         super(name);
         this.processes = processes;
         this.maxQueue = maxQueue;
-        setTState();
+        setEventTime();
     }
     @Override
     public void inAct(double currentTime) {
@@ -27,7 +26,7 @@ public class MultiTaskProcessor extends Event {
         if (process != null) {
             totalEnterTimeStart += currentTime;
             process.outAct(currentTime);
-            setTState();
+            setEventTime();
         } else {
             if(this.queue < this.maxQueue) {
                 this.queue += 1;
@@ -44,11 +43,11 @@ public class MultiTaskProcessor extends Event {
         if (process != null) {
             process.setState(0);
             process.setEventTime(Double.MAX_VALUE);
-            setTState();
+            setEventTime();
             if (this.queue > 0) {
                 process.outAct(currentTime);
                 this.queue -= 1;
-                setTState();
+                setEventTime();
             }
 
             double exitTime = currentTime; // Час виходу клієнта
@@ -78,7 +77,7 @@ public class MultiTaskProcessor extends Event {
         return null;
     }
 
-    private void setTState() {
+    private void setEventTime() {
         this.eventTime = Collections.min(processes.stream().map(process -> process.eventTime).toList());
     }
 
