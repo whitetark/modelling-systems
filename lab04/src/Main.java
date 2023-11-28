@@ -30,7 +30,7 @@ public class Main {
     public static Model createTwoChainModel(int N) {
         Create create = new Create(1, "Create");
         create.setDistributionType(DistributionType.EXPONENTIAL);
-        List<NextElement> nextElementList = new ArrayList<>();
+        List<NextEvent> nextEventList = new ArrayList<>();
         List<MultiTaskProcessor> multiTaskProcessors1 = new ArrayList<>();
         List<MultiTaskProcessor> multiTaskProcessors2 = new ArrayList<>();
         Process Process1 = new Process(1, "Process1");
@@ -42,8 +42,8 @@ public class Main {
 
             MultiTaskProcessor multiTaskProcessor = new MultiTaskProcessor(List.of(process), "MultiTaskProcessor" + i, Integer.MAX_VALUE);
 
-            NextElement hostesNext = new NextElement(multiTaskProcessor, 1);
-            nextElementList.add(hostesNext);
+            NextEvent hostesNext = new NextEvent(multiTaskProcessor, 1);
+            nextEventList.add(hostesNext);
 
             multiTaskProcessors1.add(multiTaskProcessor);
         }
@@ -53,16 +53,16 @@ public class Main {
 
             MultiTaskProcessor multiTaskProcessor = new MultiTaskProcessor(List.of(process), "MultiTaskProcessor" + i, Integer.MAX_VALUE);
 
-            NextElement hostesNext = new NextElement(multiTaskProcessor, 1);
-            nextElementList.add(hostesNext);
+            NextEvent hostesNext = new NextEvent(multiTaskProcessor, 1);
+            nextEventList.add(hostesNext);
 
             multiTaskProcessors2.add(multiTaskProcessor);
         }
-        create.setNextElement(new NextElements(nextElementList, NextElementsType.PRIORITY));
+        create.setNextEvent(new NextEvents(nextEventList, NextEventsType.PRIORITY));
 
         for (int i = 0; i < N; i++) {
-            Process1.setNextElement(new NextElements(List.of(new NextElement(multiTaskProcessors1.get(i), 1)), NextElementsType.PRIORITY));
-            multiTaskProcessors1.get(i).setNextElement(new NextElements(List.of(new NextElement(multiTaskProcessors2.get(i), 1)), NextElementsType.PRIORITY));
+            Process1.setNextEvent(new NextEvents(List.of(new NextEvent(multiTaskProcessors1.get(i), 1)), NextEventsType.PRIORITY));
+            multiTaskProcessors1.get(i).setNextEvent(new NextEvents(List.of(new NextEvent(multiTaskProcessors2.get(i), 1)), NextEventsType.PRIORITY));
         }
 
         multiTaskProcessors1.addAll(multiTaskProcessors2);
@@ -72,7 +72,7 @@ public class Main {
     public static Model createOneChainModel(int N) {
         Create create = new Create(1, "Create");
         create.setDistributionType(DistributionType.EXPONENTIAL);
-        List<NextElement> nextElementList = new ArrayList<>();
+        List<NextEvent> nextEventList = new ArrayList<>();
         List<MultiTaskProcessor> multiTaskProcessors = new ArrayList<>();
         for (int i = 0; i < N; i++) {
             Process process = new Process(1, "Process" + i);
@@ -80,12 +80,12 @@ public class Main {
 
             MultiTaskProcessor multiTaskProcessor = new MultiTaskProcessor(List.of(process), "MultiTaskProcessor" + i, Integer.MAX_VALUE);
 
-            NextElement hostesNext = new NextElement(multiTaskProcessor, 1);
-            nextElementList.add(hostesNext);
+            NextEvent hostesNext = new NextEvent(multiTaskProcessor, 1);
+            nextEventList.add(hostesNext);
 
             multiTaskProcessors.add(multiTaskProcessor);
         }
-        create.setNextElement(new NextElements(nextElementList, NextElementsType.PRIORITY));
+        create.setNextEvent(new NextEvents(nextEventList, NextEventsType.PRIORITY));
         return new Model(create, multiTaskProcessors);
     }
 
@@ -102,14 +102,11 @@ public class Main {
         System.out.println("Results:");
         System.out.println("N\tAverage Time (ms)");
 
-        System.out.println("N" + ";" + "time" + ";");
+        System.out.println("N" + "; " + "time" + ";");
         for (Map.Entry<Integer, Double> entry : sortedResults.entrySet()) {
-            System.out.println(entry.getKey() + ";" + entry.getValue() + ";");
+            System.out.println(entry.getKey() + "; " + entry.getValue() + ";");
         }
 
-        for (Map.Entry<Integer, Double> entry : sortedResults.entrySet()) {
-            System.out.println(entry.getValue());
-        }
     }
 
 }

@@ -1,45 +1,43 @@
-import java.util.List;
-
-public class Element {
-    protected double meanQueue, tstate, delay, totalWorkTime;
+public class Event {
+    protected double meanQueue, eventTime, delay, totalWorkTime;
     protected int state, queue, maxQueue, failure, served;
-    protected NextElements next;
+    protected NextEvents next;
 
     protected DistributionType distributionType;
 
     protected String name;
 
-    public Element(String name) {
+    public Event(String name) {
         this.delay = 0;
         maxQueue = Integer.MAX_VALUE;
         this.name = name;
-        tstate = 0;
+        eventTime = 0;
         next = null;
 
     }
-    public Element(double delay, String name) {
+    public Event(double delay, String name) {
         this.delay = delay;
         maxQueue = Integer.MAX_VALUE;
         this.name = name;
-        tstate = 0;
+        eventTime = 0;
         next = null;
 
     }
-    public Element(double delay, String name, int maxQueue) {
+    public Event(double delay, String name, int maxQueue) {
         this.delay = delay;
         this.maxQueue = maxQueue;
         this.name = name;
-        tstate = 0;
+        eventTime = 0;
         next = null;
     }
 
-    public void inAct(double tcurr) {
+    public void inAct(double currentTime) {
     }
-    public void outAct(double tcurr){
+    public void outAct(double currentTime){
         served++;
     }
     protected void printInfo() {
-        System.out.println("Event = " + name + " tnext = " + tstate + " queue: " + queue + " state = " + state);
+        System.out.println("Event = " + name + " eventTime = " + eventTime + " queue: " + queue + " state = " + state);
     }
     protected void printStatistic(double timeModeling){
         System.out.println("Event = " + name + " served = " + served + " failure = "+failure);
@@ -50,7 +48,7 @@ public class Element {
 
     public void doStatistics(double delta){
     }
-    public void setNextElement(NextElements next) {
+    public void setNextEvent(NextEvents next) {
         this.next = next;
     }
 
@@ -71,8 +69,8 @@ public class Element {
         this.distributionType = distributionType;
     }
 
-    protected void setTstate(double tstate) {
-        this.tstate = tstate;
+    protected void setEventTime(double eventTime) {
+        this.eventTime = eventTime;
     }
 
     protected void setState(int state) {

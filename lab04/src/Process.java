@@ -1,7 +1,7 @@
-public class Process extends Element {
+public class Process extends Event {
     public Process(double delay, String name) {
         super(delay, name);
-        this.tstate = Double.MAX_VALUE;
+        this.eventTime = Double.MAX_VALUE;
         this.distributionType = DistributionType.EXPONENTIAL;
     }
 
@@ -10,10 +10,10 @@ public class Process extends Element {
         super.outAct(tcurr);
             this.state = 1;
             double delay = getDelay();
-            this.tstate = tcurr + delay;
+            this.eventTime = tcurr + delay;
             totalWorkTime += delay;
             if (this.next != null) {
-                this.next.getNextElement().inAct(tcurr);
+                this.next.getNextEvent().inAct(tcurr);
             }
     }
 

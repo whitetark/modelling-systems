@@ -2,17 +2,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Model {
-    private double tnext;
-    private double tcurr;
+    private double nextEventTime;
+    private double currentTime;
     int changeQueue = 0;
-    private List <Element> elements = new ArrayList<>();
+    private List <Event> events = new ArrayList<>();
     private List <MultiTaskProcessor> processes;
     public Model(Create create, List<MultiTaskProcessor> process) {
-        tnext=0.0;
-        tcurr = tnext;
-        elements.add(create);
-        for (Element element : process) {
-            elements.add(element);
+        nextEventTime=0.0;
+        currentTime = nextEventTime;
+        events.add(create);
+        for (Event event : process) {
+            events.add(event);
         }
         processes = process;
     }
@@ -22,36 +22,36 @@ public class Model {
      * @param timeModeling - час моделювання в умовних одиницях часу
      */
     public void simulate(double timeModeling){
-        while(tcurr<timeModeling) {
-            tnext = Double.MAX_VALUE;       // Час наступної події
-            Element nextElement = null;         // Подія, яка станеться найближчою
+        while(currentTime<timeModeling) {
+            nextEventTime = Double.MAX_VALUE;       // Час наступної події
+            Event nextEvent = null;         // Подія, яка станеться найближчою
 
-            for (Element element : elements) {
-                if (element.tstate < tnext) {
-                    tnext = element.tstate;
-                    nextElement = element;
+            for (Event event : events) {
+                if (event.eventTime < nextEventTime) {
+                    nextEventTime = event.eventTime;
+                    nextEvent = event;
                 }
             }
             //System.out.println("\nIt's time for element in " +
             //        nextElement.name +
             //        ", time = " + tnext);
-            for (Element e : elements) {
-                e.doStatistics(tnext - tcurr);
+            for (Event e : events) {
+                e.doStatistics(nextEventTime - currentTime);
             }
-            tcurr = tnext;
+            currentTime = nextEventTime;
 
-            for (Element element : elements) {
-                if(element.tstate == tcurr) {
-                    element.outAct(tcurr);
+            for (Event event : events) {
+                if(event.eventTime == currentTime) {
+                    event.outAct(currentTime);
                 }
             }
             tryToSwitchQueue();
-            //printInfo();
+            printInfo();
         }
         //printResult(timeModeling);
     }
     public void printInfo() {
-        for (Element e : elements) {
+        for (Event e : events) {
             if(e.state == 1)
                 e.printInfo();
         }
@@ -59,16 +59,16 @@ public class Model {
     public void printResult( double timeModeling) {
         System.out.println("\n-------------RESULTS-------------");
         int totalClients = 0;
-        for (Element e : elements) {
+        for (Event e : events) {
             e.printResult();
             if (e instanceof MultiTaskProcessor) {
                 totalClients += ((MultiTaskProcessor) e).served;
                 MultiTaskProcessor p = (MultiTaskProcessor) e;
                 System.out.println("mean length of queue = " +
-                        p.meanQueue / tcurr
+                        p.meanQueue / currentTime
                         + "\nfailure probability = " +
                         p.failure / ((double) p.served + p.failure) +
-                        "\nawg load time = " + p.getTotalWorkTime() / p.getProucessCount() / timeModeling);
+                        "\nawg load time = " + p.getTotalWorkTime() / p.getProcessCount() / timeModeling);
                         System.out.println("Average Exit Interval = " + p.totalExitTime / (p.totalCustomersExited - 1));
                         System.out.println("Average Time in system = " + (p.totalEnterTimeEnd - p.totalEnterTimeStart) / p.served);
                 for (Process process : p.getProcesses()) {
@@ -83,27 +83,26 @@ public class Model {
 
     }
 
-    // method only for bank task
     public void tryToSwitchQueue() {
         int minQueue = Integer.MAX_VALUE;
         int maxQueue = 0;
-        MultiTaskProcessor minQueueElement = null;
-        MultiTaskProcessor maxQueueElement = null;
+        MultiTaskProcessor minQueueEvent = null;
+        MultiTaskProcessor maxQueueEvent = null;
         for (MultiTaskProcessor element : processes) {
             if (element.queue < minQueue) {
                 minQueue = element.queue;
-                minQueueElement = element;
+                minQueueEvent = element;
             }
             if (element.queue > maxQueue) {
                 maxQueue = element.queue;
-                maxQueueElement = element;
+                maxQueueEvent = element;
             }
         }
         double randValue = Math.random();
-        if (minQueueElement != null && maxQueueElement != null) {
-            if(maxQueueElement.queue - minQueueElement.queue >= 2 && randValue < 0.5) {
-                minQueueElement.queue += 1;
-                maxQueueElement.queue -= 1;
+        if (minQueueEvent != null && maxQueueEvent != null) {
+            if(maxQueueEvent.queue - minQueueEvent.queue >= 2 && randValue < 0.5) {
+                minQueueEvent.queue += 1;
+                maxQueueEvent.queue -= 1;
                 changeQueue++;
             }
         }

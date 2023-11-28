@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class MultiTaskProcessor extends Element {
+public class MultiTaskProcessor extends Event {
     private List<Process> processes;
 
     protected int totalCustomersExited = 0;
@@ -21,12 +21,12 @@ public class MultiTaskProcessor extends Element {
         setTState();
     }
     @Override
-    public void inAct(double tcurr) {
-        super.inAct(tcurr);
+    public void inAct(double currentTime) {
+        super.inAct(currentTime);
         Process process = getFreeProcess();
         if (process != null) {
-            totalEnterTimeStart += tcurr;
-            process.outAct(tcurr);
+            totalEnterTimeStart += currentTime;
+            process.outAct(currentTime);
             setTState();
         } else {
             if(this.queue < this.maxQueue) {
@@ -38,24 +38,24 @@ public class MultiTaskProcessor extends Element {
         }
     }
     @Override
-    public void outAct(double tcurr) {
-        super.outAct(tcurr);
-        Process process = getThisProcess(tcurr);
+    public void outAct(double currentTime) {
+        super.outAct(currentTime);
+        Process process = getThisProcess(currentTime);
         if (process != null) {
             process.setState(0);
-            process.setTstate(Double.MAX_VALUE);
+            process.setEventTime(Double.MAX_VALUE);
             setTState();
             if (this.queue > 0) {
-                process.outAct(tcurr);
+                process.outAct(currentTime);
                 this.queue -= 1;
                 setTState();
             }
 
-            double exitTime = tcurr; // Час виходу клієнта
+            double exitTime = currentTime; // Час виходу клієнта
             totalCustomersExited++;
             totalExitTime += exitTime - lastExitTime; // Різниця між поточним та попереднім часом виходу
             lastExitTime = exitTime; // Оновлення останнього часу виходу
-            totalEnterTimeEnd += tcurr;
+            totalEnterTimeEnd += currentTime;
         }
     }
 
@@ -69,9 +69,9 @@ public class MultiTaskProcessor extends Element {
         return null;
     }
 
-    private Process getThisProcess(double tcurr) {
+    private Process getThisProcess(double currentTime) {
         for (Process process : processes) {
-            if (process.tstate == tcurr) {
+            if (process.eventTime == currentTime) {
                 return process;
             }
         }
@@ -79,13 +79,13 @@ public class MultiTaskProcessor extends Element {
     }
 
     private void setTState() {
-        this.tstate = Collections.min(processes.stream().map(process -> process.tstate).toList());
+        this.eventTime = Collections.min(processes.stream().map(process -> process.eventTime).toList());
     }
 
     @Override
-    public void setNextElement(NextElements element) {
+    public void setNextEvent(NextEvents element) {
         for (Process process : processes) {
-            process.setNextElement(element);
+            process.setNextEvent(element);
         }
     }
 
@@ -113,7 +113,7 @@ public class MultiTaskProcessor extends Element {
         return  totalWorkTime;
     }
 
-    public int getProucessCount() {
+    public int getProcessCount() {
         return processes.size();
     }
 
