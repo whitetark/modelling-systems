@@ -6,14 +6,14 @@ public class Main {
 
     public static void main(String[] args) {
         //They are coming to hospital
-        Create patient = new Create(15, "Patient");
+        Create patient = new Create(5, "Patient");
 
         //Delay zero because sets later
         Process firstDoctor = new Process(0, "First Doctor");
         Process secondDoctor = new Process(0, "Second Doctor");
 
         //Now they are coming to doctor
-        MultiTaskProcessor dutyDoctorsArc = new MultiTaskProcessor(List.of(firstDoctor, secondDoctor), "Duty Doctors Processor", Integer.MAX_VALUE);
+        MultiTaskProcessor dutyDoctorsArc = new MultiTaskProcessor(List.of(firstDoctor, secondDoctor), "Duty Doctors Processor", 1000);
         dutyDoctorsArc.isDoctor = true;
 
         NextEvents doctorNextEvents = new NextEvents(List.of(new NextEvent(dutyDoctorsArc, 1)), NextEventsType.PRIORITY);
