@@ -30,9 +30,9 @@ public class coursework1 {
         int numOfExp = 5;
         int numOfSituations = 16;
         
-        //showStatistics(numOfExp, numOfSituations, timeModeling);
-        //validateModel(timeModeling); //Time Verification
-        //findChebishev(timeModeling); //Chebishev
+        showStatistics(numOfExp, numOfSituations, timeModeling);
+        validateModel(timeModeling); //Time Verification
+        findChebishev(timeModeling); //Chebishev
     }
     
     public static void showStatistics(int numOfExp, int numOfSituations, int timeModeling) throws
@@ -201,9 +201,9 @@ public class coursework1 {
             model.setIsProtokol(false);
 
             model.go(timeModeling);
-            double failureProbability = model.getListObj().get(0).getNet().getListP()[3].getMark()
-                    / (double)(model.getListObj().get(0).getNet().getListP()[3].getMark()
-                    + model.getListObj().get(0).getNet().getListP()[6].getMark());
+            double failureProbability = model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark()
+                    / (double)(model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark()
+                    + model.getListObj().get(0).getNet().getListP()[3].getMark()) + model.getListObj().get(0).getNet().getListP()[2].getMark();
             finProbs.add(failureProbability);
         }
         double total = 0;
@@ -223,7 +223,7 @@ public class coursework1 {
         System.out.println();
         System.out.println("FINDING NUMBER OF EXPERIMENTS:");
         System.out.println();
-        System.out.println("Average = " + avg);
+        System.out.println("Failure Probability = " + avg);
         System.out.println("Standard Deviation = " + stdDev);
         System.out.println("Enough number of experiments: " + numOfExp);
     }
