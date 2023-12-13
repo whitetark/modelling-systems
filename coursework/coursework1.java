@@ -19,13 +19,13 @@ import javax.swing.JTable;
 public class coursework1 {
 
     public static void main(String[] args) throws ExceptionInvalidTimeDelay, ExceptionInvalidNetStructure {
-        int timeModeling = 1440;
+        int timeModeling = 4000;
         int numOfExp = 50;
         
         //firstExperiment(timeModeling);
         showStatistics(numOfExp, timeModeling);
         //validateModel(timeModeling);
-        //chebishevExperiment(timeModeling);
+        chebishevExperiment(timeModeling);
         //timeExperiment(numOfExp);
     }
     
@@ -78,6 +78,7 @@ public class coursework1 {
         
         int totalSumOfProcessed = 0;
         int totalSumOfStucked = 0;
+        int totalSumInStorage = 0;
         
         for(int i = 0; i < numOfSituations; i++){
             for(int j = 0; j < numOfExp; j++){
@@ -90,7 +91,8 @@ public class coursework1 {
                     
                     totalSumOfProcessed = totalSumOfProcessed + model.getListObj().get(0).getNet().getListP()[3].getMark()+ model.getListObj().get(0).getNet().getListP()[6].getObservedMax();
                     totalSumOfStucked = totalSumOfStucked + model.getListObj().get(0).getNet().getListP()[2].getMark() + model.getListObj().get(0).getNet().getListP()[4].getObservedMax();
-                   
+                    totalSumInStorage = totalSumInStorage + model.getListObj().get(0).getNet().getListP()[4].getObservedMax();
+                    
                     data[index] = new Object[]{createDelay[i], firstRegDelay[i], secondRegDelay[i], fullRegDelay[i], firstRegQ[i], secondRegQ[i], fullRegQ[i],
                         model.getListObj().get(0).getNet().getListP()[2].getObservedMax(),
                         model.getListObj().get(0).getNet().getListP()[2].getMean(),
@@ -124,6 +126,7 @@ public class coursework1 {
         
         double total = probabilities.stream().mapToDouble(Double::doubleValue).sum();
         double failureProbability = total / probabilities.size();
+        double storageLoad = (double) totalSumInStorage / (totalSumOfStucked + totalSumOfProcessed);
         double stuckProbability = (double) totalSumOfStucked / (totalSumOfStucked + totalSumOfProcessed)*100;
         double agregatsPerDay = (double) timeModeling / 30 * 2;
         long adviceForSize =  (long) ((Math.round(agregatsPerDay/100 * stuckProbability)+5)/10)*10;
@@ -131,7 +134,8 @@ public class coursework1 {
         System.out.println();
         System.out.println("~~~~~~~~~~~~~~~~~~~~~Main Goals~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("Failure Probability: " + failureProbability);
-        System.out.println("Stack Probability : " + stuckProbability);
+        System.out.println("Storage Load: " + storageLoad);
+        System.out.println("Stuck Probability : " + stuckProbability/100);
         System.out.println("Advice For Size : " + adviceForSize);
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         for (int i = 0; i < probabilities.size(); i++) {
@@ -145,7 +149,7 @@ public class coursework1 {
         double dFactual = sFactual;
         double dResidual = sResidual / degreesOfFreedom;
         double f = dFactual / dResidual;
-        double fCritical = 3.01; //a=0.05; k1=4; k2=16
+        double fCritical = 1.41805107; //a=0.05; k1=49; k2=200
         System.out.println();
         System.out.println("~~~~~~~~~~~~~~~~~Analysis Of Variance~~~~~~~~~~~~~~~~");
         System.out.println("Sum of Squares: " + dFactual);
