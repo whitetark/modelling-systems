@@ -25,7 +25,7 @@ public class coursework1 {
         //firstExperiment(timeModeling);
         showStatistics(numOfExp, timeModeling);
         //validateModel(timeModeling);
-        chebishevExperiment(timeModeling);
+        //chebishevExperiment(timeModeling);
         //timeExperiment(numOfExp);
     }
     
