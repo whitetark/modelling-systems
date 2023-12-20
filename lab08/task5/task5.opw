@@ -1,0 +1,37 @@
+[RESOURCES]
+Resource 1
+Resource 2
+Resource 3
+[VARIABLES]
+Machine 2.NumberOut
+moveToThird.NumberOut
+isFirstFree.NumberOut False
+moveToSecond.NumberIn
+moveToFirst.NumberIn
+Machine 1.NumberIn
+Finished.NumberOut
+Machine 3.NumberIn
+Machine 5.NumberIn
+isThirdFree.NumberOut True
+isSecondFree.NumberOut False
+Machine 1.NumberOut
+Machine 4.NumberOut
+moveToThird.NumberIn
+moveToFourth.NumberOut
+Create 1.NumberOut
+moveToFirst.NumberOut
+isFirstFree.NumberOut True
+Machine 3.NumberOut
+isThirdFree.NumberOut False
+moveToSecond.NumberOut
+isFifthFree.NumberOut False
+isFourthFree.NumberOut True
+moveToFifth.NumberOut
+Machine 2.NumberIn
+Machine 4.NumberIn
+isFifthFree.NumberOut True
+moveToFifth.NumberIn
+moveToFourth.NumberIn
+isFourthFree.NumberOut False
+isSecondFree.NumberOut True
+Machine 5.NumberOut

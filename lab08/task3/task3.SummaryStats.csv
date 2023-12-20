@@ -1,0 +1,36 @@
+"Statistic Name","Statistic Type","Database Data Type","Database Category","Database Identifier","Rep 1"
+"Entity 1.NumberIn","OUTPUT VALUE","Number In","Entity","Entity 1",140
+"Entity 1.NumberOut","OUTPUT VALUE","Number Out","Entity","Entity 1",140
+"Resource 1.NumberSeized","OUTPUT VALUE","Total Number Seized","Resource","Resource 1",140
+"Resource 1.ScheduledUtilization","OUTPUT VALUE","Scheduled Utilization","Resource","Resource 1",1
+"Resource 2.NumberSeized","OUTPUT VALUE","Total Number Seized","Resource","Resource 2",140
+"Resource 2.ScheduledUtilization","OUTPUT VALUE","Scheduled Utilization","Resource","Resource 2",1
+"Resource 3.NumberSeized","OUTPUT VALUE","Total Number Seized","Resource","Resource 3",140
+"Resource 3.ScheduledUtilization","OUTPUT VALUE","Scheduled Utilization","Resource","Resource 3",1
+"System.NumberOut","OUTPUT VALUE","Number Out","System","System",140
+"Entity 1.NVATime","TALLY AVERAGE","NVA Time","Entity","Entity 1",0
+"Entity 1.OtherTime","TALLY AVERAGE","Other Time","Entity","Entity 1",0
+"Entity 1.TotalTime","TALLY AVERAGE","Total Time","Entity","Entity 1",1.01399342714026
+"Entity 1.TranTime","TALLY AVERAGE","Transfer Time","Entity","Entity 1",0.768214285714293
+"Entity 1.VATime","TALLY AVERAGE","VA Time","Entity","Entity 1",1.83094110888447E-02
+"Entity 1.WaitTime","TALLY AVERAGE","Wait Time","Entity","Entity 1",0.227469730337119
+"Entity 1.WIP","DSTAT AVERAGE","WIP","Entity","Entity 1",55.3809962657974
+"Machine 1.Queue.NumberInQueue","DSTAT AVERAGE","Number Waiting","Queue","Machine 1.Queue",2.47340671920978
+"Machine 1.Queue.WaitingTime","TALLY AVERAGE","Waiting Time","Queue","Machine 1.Queue",0.198128964302161
+"Machine 2.Queue.NumberInQueue","DSTAT AVERAGE","Number Waiting","Queue","Machine 2.Queue",2.45627268882151
+"Machine 2.Queue.WaitingTime","TALLY AVERAGE","Waiting Time","Queue","Machine 2.Queue",0.233192848030773
+"Machine 3.Queue.NumberInQueue","DSTAT AVERAGE","Number Waiting","Queue","Machine 3.Queue",2.44498077402244
+"Machine 3.Queue.WaitingTime","TALLY AVERAGE","Waiting Time","Queue","Machine 3.Queue",0.232120819756511
+"Machine 4.Queue.NumberInQueue","DSTAT AVERAGE","Number Waiting","Queue","Machine 4.Queue",2.46083548045043
+"Machine 4.Queue.WaitingTime","TALLY AVERAGE","Waiting Time","Queue","Machine 4.Queue",0.233626028914867
+"Machine 5.Queue.NumberInQueue","DSTAT AVERAGE","Number Waiting","Queue","Machine 5.Queue",2.58815517112144
+"Machine 5.Queue.WaitingTime","TALLY AVERAGE","Waiting Time","Queue","Machine 5.Queue",0.245713465872942
+"Resource 1.NumberBusy","DSTAT AVERAGE","Number Busy","Resource","Resource 1",1
+"Resource 1.NumberScheduled","DSTAT AVERAGE","Number Scheduled","Resource","Resource 1",1
+"Resource 1.Utilization","DSTAT AVERAGE","Instantaneous Utilization","Resource","Resource 1",1
+"Resource 2.NumberBusy","DSTAT AVERAGE","Number Busy","Resource","Resource 2",1
+"Resource 2.NumberScheduled","DSTAT AVERAGE","Number Scheduled","Resource","Resource 2",1
+"Resource 2.Utilization","DSTAT AVERAGE","Instantaneous Utilization","Resource","Resource 2",1
+"Resource 3.NumberBusy","DSTAT AVERAGE","Number Busy","Resource","Resource 3",1
+"Resource 3.NumberScheduled","DSTAT AVERAGE","Number Scheduled","Resource","Resource 3",1
+"Resource 3.Utilization","DSTAT AVERAGE","Instantaneous Utilization","Resource","Resource 3",1
