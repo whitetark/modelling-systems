@@ -19,11 +19,11 @@ import javax.swing.JTable;
 public class coursework1 {
 
     public static void main(String[] args) throws ExceptionInvalidTimeDelay, ExceptionInvalidNetStructure {
-        int timeModeling = 4000;
-        int numOfExp = 50;
+        int timeModeling = 1440;
+        int numOfExp = 6;
         
-        //firstExperiment(timeModeling);
-        showStatistics(numOfExp, timeModeling);
+        firstExperiment(timeModeling);
+        //showStatistics(numOfExp, timeModeling);
         //validateModel(timeModeling);
         //chebishevExperiment(timeModeling);
         //timeExperiment(numOfExp);
@@ -34,9 +34,10 @@ public class coursework1 {
         PetriObjModel model = getModel(30, 30, 1, 30, 1, 100, 1);
         model.setIsProtokol(false);
         model.go(timeModeling);
-        double failureProbability = (model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark())
-        / ((double)(model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark()
-        + model.getListObj().get(0).getNet().getListP()[3].getMark()) + model.getListObj().get(0).getNet().getListP()[2].getMark());
+        double total = (double)(model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark()
+        + model.getListObj().get(0).getNet().getListP()[3].getMark()) + model.getListObj().get(0).getNet().getListP()[2].getMark();
+        double failureProbability = (model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark())/ total;
+        double storageLoad = model.getListObj().get(0).getNet().getListP()[4].getMean()/total;
         
         System.out.println();
         System.out.println("~~~~~~~~~~~~~~~~~~~Solo Experiment~~~~~~~~~~~~~~~~~~~");
@@ -48,25 +49,25 @@ public class coursework1 {
         System.out.println("LeftQ2: "  + model.getListObj().get(0).getNet().getListP()[4].getMark());
         System.out.println("NumOfFull: "  + model.getListObj().get(0).getNet().getListP()[6].getMark());
         System.out.println("NumOfSecond: "  + model.getListObj().get(0).getNet().getListP()[3].getMark());
-        System.out.println("FProb: "  + failureProbability);
+        System.out.println("Failure Prob: "  + failureProbability);
+        System.out.println("Storage Load: " + storageLoad);
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        
-  
     }
     
     public static void showStatistics(int numOfExp, int timeModeling) throws
         ExceptionInvalidTimeDelay, ExceptionInvalidNetStructure {
         JFrame frame = new JFrame();
-        String[] columnNames = {"CreateDelay", "FirstRegDelay", "SecondRegDelay", "FullRegDelay","FirstRegQ", "SecondRegQ", "FullRegQ", "MaxQ1" ,"MeanQ1" ,"LeftQ1" ,"MaxQ2" ,"MeanQ2" ,"LeftQ2", "NumOfSecond" ,"NumOfFull", "FProb"};
-        double[] createDelay = {10.0, 100.0, 40.0, 30.0, 20.0};
-        double[] firstRegDelay = {60.0, 30.0, 40.0, 30.0, 20.0};
-        int[] firstRegQ = {1, 2, 3, 1, 1};
-        double[] secondRegDelay = {20.0, 30.0, 40.0, 30.0, 50.0};
-        int[] secondRegQ = {1, 2, 1, 1, 3};
-        double[] fullRegDelay = {20.0, 100.0, 140.0, 100.0, 80.0};
-        int[] fullRegQ = {2, 1, 1, 1, 2};
+        String[] columnNames = {"CreateDelay", "FirstRegDelay", "SecondRegDelay", "FullRegDelay", "MaxQ1" ,"MeanQ1" ,"LeftQ1" ,"MaxQ2" ,"MeanQ2" ,"LeftQ2", "NumOfSecond" ,"NumOfFull", "FProb", "SLoad"};
+        double[] createDelay = {20.0, 30.0, 40.0};
+        double[] firstRegDelay = {20.0, 30.0, 40.0}; 
+        double[] secondRegDelay = {20.0, 30.0, 40.0}; 
+        double[] fullRegDelay = {60.0, 100.0, 140.0};
         
-        int numOfSituations = createDelay.length;
+        //double[] createDelay = {30.0, 30.0, 30.0};
+        //double[] firstRegDelay = {30.0, 30.0, 30.0}; 
+        //double[] secondRegDelay = {30.0, 30.0, 30.0}; 
+        //double[] fullRegDelay = {100.0, 100.0, 100.0};
+        int numOfSituations = 81;
         
         Object[][] data = new Object[numOfSituations*numOfExp][columnNames.length];
         int index = 0;
@@ -79,43 +80,52 @@ public class coursework1 {
         int totalSumOfProcessed = 0;
         int totalSumOfStucked = 0;
         int totalSumInStorage = 0;
+        double totalSumInStorageMean = 0;
         
-        for(int i = 0; i < numOfSituations; i++){
-            for(int j = 0; j < numOfExp; j++){
-                PetriObjModel model = getModel(createDelay[i], firstRegDelay[i], firstRegQ[i], secondRegDelay[i], secondRegQ[i], fullRegDelay[i], fullRegQ[i]);
-                    model.setIsProtokol(false);
-                    model.go(timeModeling);
-                    double failureProbability = (model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark())
-                    / ((double)(model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark()
-                    + model.getListObj().get(0).getNet().getListP()[3].getMark()) + model.getListObj().get(0).getNet().getListP()[2].getMark());
-                    
-                    totalSumOfProcessed = totalSumOfProcessed + model.getListObj().get(0).getNet().getListP()[3].getMark()+ model.getListObj().get(0).getNet().getListP()[6].getObservedMax();
-                    totalSumOfStucked = totalSumOfStucked + model.getListObj().get(0).getNet().getListP()[2].getMark() + model.getListObj().get(0).getNet().getListP()[4].getObservedMax();
-                    totalSumInStorage = totalSumInStorage + model.getListObj().get(0).getNet().getListP()[4].getObservedMax();
-                    
-                    data[index] = new Object[]{createDelay[i], firstRegDelay[i], secondRegDelay[i], fullRegDelay[i], firstRegQ[i], secondRegQ[i], fullRegQ[i],
-                        model.getListObj().get(0).getNet().getListP()[2].getObservedMax(),
-                        model.getListObj().get(0).getNet().getListP()[2].getMean(),
-                        model.getListObj().get(0).getNet().getListP()[2].getMark(),
-                        model.getListObj().get(0).getNet().getListP()[4].getObservedMax(),
-                        model.getListObj().get(0).getNet().getListP()[4].getMean(),
-                        model.getListObj().get(0).getNet().getListP()[4].getMark(),
-                        model.getListObj().get(0).getNet().getListP()[3].getMark(),
-                        model.getListObj().get(0).getNet().getListP()[6].getMark(),
-                        failureProbability
-                    };
-                    index++;
-                    probabilities.add(failureProbability);
+        for(int i1 = 0; i1 < createDelay.length; i1++){
+            for(int i2 = 0; i2 < firstRegDelay.length; i2++){
+                for(int i3 = 0; i3 < secondRegDelay.length; i3++){
+                    for(int i4 = 0; i4 < fullRegDelay.length; i4++){
+                        for(int j = 0; j < numOfExp; j++){
+                            PetriObjModel model = getModel(createDelay[i1], firstRegDelay[i2], 1, secondRegDelay[i3], 1, fullRegDelay[i4], 1);
+                            model.setIsProtokol(false);
+                            model.go(timeModeling);
+                            double total = ((double)(model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark()
+                            + model.getListObj().get(0).getNet().getListP()[3].getMark()) + model.getListObj().get(0).getNet().getListP()[2].getMark());
+
+                            double failureProbability = (model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark())
+                            / total;
+                            double storageLoad = model.getListObj().get(0).getNet().getListP()[4].getMean()/total;
+
+                            totalSumOfProcessed = totalSumOfProcessed + model.getListObj().get(0).getNet().getListP()[3].getMark()+ model.getListObj().get(0).getNet().getListP()[6].getObservedMax();
+                            totalSumOfStucked = totalSumOfStucked + model.getListObj().get(0).getNet().getListP()[2].getMark() + model.getListObj().get(0).getNet().getListP()[4].getObservedMax();
+                            totalSumInStorage = totalSumInStorage + model.getListObj().get(0).getNet().getListP()[4].getObservedMax();
+                            totalSumInStorageMean = totalSumInStorageMean + model.getListObj().get(0).getNet().getListP()[4].getMean();
+
+                            data[index] = new Object[]{createDelay[i1], firstRegDelay[i2], secondRegDelay[i3], fullRegDelay[i4],
+                                model.getListObj().get(0).getNet().getListP()[2].getObservedMax(),
+                                model.getListObj().get(0).getNet().getListP()[2].getMean(),
+                                model.getListObj().get(0).getNet().getListP()[2].getMark(),
+                                model.getListObj().get(0).getNet().getListP()[4].getObservedMax(),
+                                model.getListObj().get(0).getNet().getListP()[4].getMean(),
+                                model.getListObj().get(0).getNet().getListP()[4].getMark(),
+                                model.getListObj().get(0).getNet().getListP()[3].getMark(),
+                                model.getListObj().get(0).getNet().getListP()[6].getMark(),
+                                failureProbability, storageLoad
+                            };
+                            index++;
+                            probabilities.add(failureProbability);
+                        }
+                        double total = probabilities.stream().mapToDouble(Double::doubleValue).sum();
+                        double failureProbability = total / numOfExp;
+                        for(int j = 0; j<numOfExp; j++){
+                            probabilitiesAvg.add(failureProbability);
+                        }
+                    }
+                }
             }
-            
-            double total = probabilities.stream().mapToDouble(Double::doubleValue).sum();
-            double failureProbability = total / probabilities.size();
-            for(int j = 0; j<numOfExp; j++){
-                probabilitiesAvg.add(failureProbability);
-            }
-            
         }
-        
+
         JTable table = new JTable(data, columnNames);
         JScrollPane sp = new JScrollPane(table);
         frame.add(sp);
@@ -126,16 +136,17 @@ public class coursework1 {
         
         double total = probabilities.stream().mapToDouble(Double::doubleValue).sum();
         double failureProbability = total / probabilities.size();
-        double storageLoad = (double) totalSumInStorage / (totalSumOfStucked + totalSumOfProcessed);
-        double stuckProbability = (double) totalSumOfStucked / (totalSumOfStucked + totalSumOfProcessed)*100;
-        double agregatsPerDay = (double) timeModeling / 30 * 2;
-        long adviceForSize =  (long) ((Math.round(agregatsPerDay/100 * stuckProbability)+5)/10)*10;
+        double storageLoad = (double) totalSumInStorageMean / (totalSumOfStucked + totalSumOfProcessed);
+        double storageAvg = (double) totalSumInStorage / (numOfSituations * numOfExp);
+        double stuckProbability = (double) totalSumOfStucked / (totalSumOfStucked + totalSumOfProcessed);
+        long adviceForSize =  (long) ((Math.round(((totalSumOfStucked + totalSumOfProcessed)/(numOfSituations * numOfExp))* stuckProbability)+5)/10)*10;
         
         System.out.println();
         System.out.println("~~~~~~~~~~~~~~~~~~~~~Main Goals~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("Failure Probability: " + failureProbability);
         System.out.println("Storage Load: " + storageLoad);
-        System.out.println("Stuck Probability : " + stuckProbability/100);
+        System.out.println("Storage Avg Max: " + storageAvg);
+        System.out.println("Stuck Probability : " + stuckProbability);
         System.out.println("Advice For Size : " + adviceForSize);
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         for (int i = 0; i < probabilities.size(); i++) {
@@ -216,13 +227,13 @@ public class coursework1 {
     }
     
     public static void timeExperiment(int numOfExp) throws ExceptionInvalidTimeDelay, ExceptionInvalidNetStructure {
-        int timeModelingMax = 10000;
-        int timeModelingStep = 10;
+        int timeModelingMax = 100000;
+        int timeModelingStep = 100;
         int timeModelingStart = 100;
     
         JFrame frame = new JFrame();
         Object[][] data = new Object[(timeModelingMax-timeModelingStep)*numOfExp][2];
-        String[] columnNames = {"CreateDelay", "FirstRegDelay"};
+        String[] columnNames = {"CreateDelay", "FirstRegDelay","SecondRegDelay"};
         int index = 0;
         for (int i = 0; i < numOfExp; i++) {
             int t = timeModelingStart;
@@ -230,11 +241,13 @@ public class coursework1 {
                 PetriObjModel model = getModel(30, 30, 1, 30, 1, 100, 1);
                 model.setIsProtokol(false);
                 model.go(t);
+                double total = (double)(model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark()
+                    + model.getListObj().get(0).getNet().getListP()[3].getMark()) + model.getListObj().get(0).getNet().getListP()[2].getMark();
                 double failureProbability = (model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark())
-                    / ((double)(model.getListObj().get(0).getNet().getListP()[6].getMark() + model.getListObj().get(0).getNet().getListP()[4].getMark()
-                    + model.getListObj().get(0).getNet().getListP()[3].getMark()) + model.getListObj().get(0).getNet().getListP()[2].getMark());
+                    / total;
+                double storageLoad = model.getListObj().get(0).getNet().getListP()[4].getMean()/total;
                 
-                data[index] = new Object[]{t, failureProbability};
+                data[index] = new Object[]{t, failureProbability, storageLoad};
                 
                 t += timeModelingStep;
                 index++;
