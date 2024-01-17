@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87087a19-a6a4-47a6-8fcb-07415325fc81" name="Changes" comment="" />
+    <list default="true" id="87087a19-a6a4-47a6-8fcb-07415325fc81" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../lab08/task2/task2.Backup.doe" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task2/task2.Backup.doe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task2/task2.doe" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task2/task2.doe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task2/task2.mdb" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task2/task2.mdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task2/task2.out" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task2/task2.out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task2/task2.p" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task2/task2.p" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task3/task3.Backup.doe" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task3/task3.Backup.doe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task3/task3.doe" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task3/task3.doe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task3/task3.mdb" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task3/task3.mdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task3/task3.out" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task3/task3.out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task3/task3.p" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task3/task3.p" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task5/task5.Backup.doe" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task5/task5.Backup.doe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task5/task5.doe" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task5/task5.doe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task5/task5.mdb" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task5/task5.mdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task5/task5.out" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task5/task5.out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab08/task5/task5.p" beforeDir="false" afterPath="$PROJECT_DIR$/../lab08/task5/task5.p" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,7 +36,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/WebThings/modelling-systems/exam/6 ticket"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
