@@ -10,31 +10,11 @@ public class Main {
         Process process4 = new Process(9, "Cashier 4", DistributionType.EXPONENTIAL);
         Process process5 = new Process(9, "Cashier 5", DistributionType.EXPONENTIAL);
 
-        create.eventTime = 2;
-
-        process1.state = 1;
-        process2.state = 1;
-        process3.state = 1;
-        process4.state = 1;
-        process5.state = 1;
-
-        process1.eventTime = FunRand.exp(9);
-        process2.eventTime = FunRand.exp(9);
-        process3.eventTime = FunRand.exp(9);
-        process4.eventTime = FunRand.exp(9);
-        process5.eventTime = FunRand.exp(9);
-
         MultiTaskProcessor multiTaskProcessor1 = new MultiTaskProcessor(List.of(process1), "Window1", 2);
         MultiTaskProcessor multiTaskProcessor2 = new MultiTaskProcessor(List.of(process2), "Window2", 2);
         MultiTaskProcessor multiTaskProcessor3 = new MultiTaskProcessor(List.of(process3), "Window3", 2);
         MultiTaskProcessor multiTaskProcessor4 = new MultiTaskProcessor(List.of(process4), "Window4", 2);
         MultiTaskProcessor multiTaskProcessor5 = new MultiTaskProcessor(List.of(process5), "Window5", 2);
-
-        multiTaskProcessor1.queue = 1;
-        multiTaskProcessor2.queue = 1;
-        multiTaskProcessor3.queue = 1;
-        multiTaskProcessor4.queue = 1;
-        multiTaskProcessor5.queue = 1;
 
         NextEvent nextEvent1 = new NextEvent(multiTaskProcessor1,0.2,  1);
         NextEvent nextEvent2 = new NextEvent(multiTaskProcessor2, 0.2, 1);
